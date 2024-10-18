@@ -1,0 +1,26 @@
+[package]
+name = "notification-service"
+version = "0.0.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+config = "0.14.0"
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+reqwest = { version = "0.12.8", features = ["json", "rustls-tls", "http2"] }
+tokio = { version = "1", features = ["full"] }
+jsonwebtoken = "9.3.0"
+log = "0.4.22"
+chrono = "0.4.38"
+tonic = "0.12.3"
+prost = "0.13.3"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+lapin = "2.5.0"
+futures = "0.3"
+
+
+[build-dependencies]
+tonic-build = "0.12.3"

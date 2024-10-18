@@ -1,0 +1,17 @@
+[firebase]
+server_key = ""
+url = "https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
+
+[apns]
+team_id = ""
+key_id = ""
+private_key = "apns.p8"
+url = "https://api.sandbox.push.apple.com/3/device/"
+bundle_id = ""
+
+[rabbitmq]
+scheme = "amqp"
+host = "localhost"
+port = 5672
+username = "rabbit"
+password = "rabbit"

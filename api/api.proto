@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package api;
+
+service DeviceService {
+  rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+}
+
+message RegisterDeviceRequest {
+  string os = 1;
+  string device_token = 2;
+  string user_id = 3;
+}
+
+message RegisterDeviceResponse {
+  string message = 1;
+}
