@@ -3,6 +3,8 @@ mod providers;
 mod rpc;
 mod rabbit;
 mod listeners;
+mod repositories;
+mod entities;
 
 use tokio;
 use tonic::transport::Server;
@@ -13,14 +15,11 @@ use crate::rabbit::client::RabbitClient;
 use crate::listeners::notification::Notification;
 use crate::providers::fcm::Fcm;
 use crate::providers::apns::Apns;
+use crate::repositories::device::{DeviceRepository, Repository};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("Notification service is running!");
     let cfg = AppConfig::load()?;
-
-    let title = "Some test notification local RUST";
-    let body = "Something text for something notification";
 
     let fcm = Fcm::new(cfg.firebase);
     let apns = Apns::new(cfg.apns);
@@ -28,8 +27,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let rabbitmq = RabbitClient::new(cfg.rabbitmq).await?;
     let notification_listener = Notification::new(rabbitmq.conn).await?;
 
+    let db_conn = sqlx::postgres::PgPoolOptions::new().max_connections(10).connect(&cfg.database.dsn).await?;
+    let device_repository = DeviceRepository::new(db_conn);
+    let service = Service::new(fcm, apns, notification_listener, device_repository).await?;
+
+
     let addr = "[::1]:50051".parse().unwrap();
-    let service = Service::new(fcm, apns, notification_listener).await?;
+
+    println!("Start server listening on {}", addr);
 
     Server::builder()
         .add_service(DeviceServiceServer::new(service))

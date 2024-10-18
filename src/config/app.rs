@@ -3,12 +3,14 @@ use serde::Deserialize;
 use crate::config::apns::{Config as ApnsConfig};
 use crate::config::firebase::{Config as FirebaseConfig};
 use crate::config::rabbitmq::{Config as RabbitmqConfig};
+use crate::config::database::{Config as DatabaseConfig};
 
 #[derive(Debug, Deserialize)]
 pub struct AppConfig {
     pub firebase: FirebaseConfig,
     pub apns: ApnsConfig,
     pub rabbitmq: RabbitmqConfig,
+    pub database: DatabaseConfig,
 }
 
 impl AppConfig {

@@ -1,8 +1,6 @@
 use futures::StreamExt;
 use lapin::{options::*, Channel, Connection, ExchangeKind};
 use lapin::message::Delivery;
-use lapin::protocol::queue;
-use lapin::protocol::queue::AMQPMethod;
 use lapin::types::FieldTable;
 
 const NOTIFICATION_CONSUMER_NAME: &str = "notification_consumer";
