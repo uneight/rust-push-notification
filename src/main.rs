@@ -6,6 +6,7 @@ mod listeners;
 mod repositories;
 mod entities;
 
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use tokio;
 use tonic::transport::Server;
 use crate::config::app::AppConfig;
@@ -32,7 +33,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let service = Service::new(fcm, apns, notification_listener, device_repository).await?;
 
 
-    let addr = "[::1]:50051".parse().unwrap();
+    let ip_addr: IpAddr = cfg.rpc.host.parse()?;
+    let addr = SocketAddr::new(ip_addr, cfg.rpc.port);
 
     println!("Start server listening on {}", addr);
 

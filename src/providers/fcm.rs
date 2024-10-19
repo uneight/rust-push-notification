@@ -3,6 +3,9 @@ use std::time::SystemTime;
 use serde::{Deserialize, Serialize};
 use crate::config::firebase::Config;
 
+const DEFAULT_SCOPE: &str = "https://www.googleapis.com/auth/firebase.messaging";
+const ACCESS_TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
+
 #[derive(Debug, Serialize, Deserialize)]
 struct ServiceAccount {
     private_key: String,
@@ -77,8 +80,8 @@ async fn jwt_token(service_account_key: &str) -> Result<String, Box<dyn std::err
 
     let claims = FirebaseClaims {
         iss: service_account.client_email.clone(), // Ensure proper ownership
-        scope: "https://www.googleapis.com/auth/firebase.messaging".to_string(), // Correct FCM scope
-        aud: "https://oauth2.googleapis.com/token".to_string(),
+        scope: DEFAULT_SCOPE.to_string(), // Correct FCM scope
+        aud: ACCESS_TOKEN_URL.to_string(),
         exp,
         iat: now,
     };
@@ -101,7 +104,7 @@ async fn access_token() -> Result<String, Box<dyn std::error::Error>> {
     let token = jwt_token("service-account.json").await?;
     let client = reqwest::Client::new();
     let response = client
-        .post("https://oauth2.googleapis.com/token")
+        .post(ACCESS_TOKEN_URL)
         .header("Content-Type", "application/x-www-form-urlencoded")
         .body(format!(
             "assertion={}&grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer",

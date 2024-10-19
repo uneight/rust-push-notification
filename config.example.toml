@@ -1,3 +1,7 @@
+[rpc]
+host = "0.0.0.0"
+port = 50051
+
 [firebase]
 server_key = ""
 url = "https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
@@ -5,8 +9,7 @@ url = "https://fcm.googleapis.com/v1/projects/{project_id}/messages:send"
 [apns]
 team_id = ""
 key_id = ""
-private_key = "apns.p8"
-url = "https://api.sandbox.push.apple.com/3/device/"
+url = ""
 bundle_id = ""
 
 [rabbitmq]
@@ -15,3 +18,6 @@ host = "localhost"
 port = 5672
 username = "rabbit"
 password = "rabbit"
+
+[database]
+dsn = "postgres://postgres:postgres@localhost/postgres"

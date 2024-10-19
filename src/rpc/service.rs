@@ -7,7 +7,7 @@ pub mod api {
 }
 
 use api::device_service_server::{DeviceService};
-use api::{RegisterDeviceRequest, RegisterDeviceResponse};
+use api::{RegisterDeviceRequest, RegisterDeviceResponse, SubscribeRequest, SubscribeResponse};
 use providers::fcm::Fcm;
 use providers::apns::Apns;
 use crate::entities::device::Device;
@@ -37,12 +37,13 @@ impl Service {
 impl DeviceService for Service {
     async fn register_device(&self, request: Request<RegisterDeviceRequest>) -> Result<Response<RegisterDeviceResponse>, Status> {
         let req = request.into_inner();
-        let device_token = req.device_token;
-        let user_id = Uuid::parse_str(req.user_id.as_str()).unwrap();
+
         let os = req.os;
+        let topic = req.topic;
+        let user_id = Uuid::parse_str(&req.user_id).unwrap();
+        let device_token = req.device_token;
 
         let result = self.device_repository.create(Device{
-            id: Uuid::new_v4(),
             user_id,
             device_token,
             os,
@@ -62,5 +63,14 @@ impl DeviceService for Service {
                 Err(Status::internal("Failed to create device"))
             }
         }
+    }
+    async fn subscribe(&self, request: Request<SubscribeRequest>) -> Result<Response<SubscribeResponse>, Status> {
+        let request = request.into_inner();
+
+        let resp = SubscribeResponse {
+            message: "Subscribed".to_string()
+        };
+
+        Ok(Response::new(resp))
     }
 }

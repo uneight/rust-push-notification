@@ -6,6 +6,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use crate::config::apns::{Config};
 
+const APNS_PRIVATE_KEY_NAME: &str = "apns-private-key.p8";
+
 #[derive(Serialize, Deserialize)]
 struct ApnsClaims {
     iss: String,
@@ -22,7 +24,7 @@ impl Apns {
         Apns { cfg }
     }
     fn generate_apns_token(&self) -> Result<String, Box<dyn std::error::Error>> {
-        let private_key = fs::read_to_string(&self.cfg.private_key)?;
+        let private_key = fs::read_to_string(APNS_PRIVATE_KEY_NAME)?;
 
         let now = Utc::now().timestamp();
 

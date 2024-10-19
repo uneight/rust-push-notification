@@ -4,14 +4,25 @@ package api;
 
 service DeviceService {
   rpc RegisterDevice(RegisterDeviceRequest) returns (RegisterDeviceResponse);
+  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse);
 }
 
 message RegisterDeviceRequest {
   string os = 1;
-  string device_token = 2;
+  string topic = 2;
   string user_id = 3;
+  string device_token = 4;
 }
 
 message RegisterDeviceResponse {
+  string message = 1;
+}
+
+message SubscribeRequest {
+  string topic = 1;
+  string user_id = 2;
+}
+
+message SubscribeResponse {
   string message = 1;
 }

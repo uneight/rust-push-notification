@@ -4,6 +4,7 @@ use crate::config::apns::{Config as ApnsConfig};
 use crate::config::firebase::{Config as FirebaseConfig};
 use crate::config::rabbitmq::{Config as RabbitmqConfig};
 use crate::config::database::{Config as DatabaseConfig};
+use crate::config::rpc::{Config as RpcConfig};
 
 #[derive(Debug, Deserialize)]
 pub struct AppConfig {
@@ -11,6 +12,7 @@ pub struct AppConfig {
     pub apns: ApnsConfig,
     pub rabbitmq: RabbitmqConfig,
     pub database: DatabaseConfig,
+    pub rpc: RpcConfig,
 }
 
 impl AppConfig {

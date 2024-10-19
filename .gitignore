@@ -1,5 +1,5 @@
 /target
 /.idea
-apns.p8
+apns-private-key.p8
 service-account.json
 config.toml

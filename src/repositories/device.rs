@@ -16,8 +16,7 @@ impl Repository<Device> for DeviceRepository {
     }
 
     async fn create(&self, entity: Device) -> Result<Device, Box<dyn std::error::Error>> {
-        let query = sqlx::query("insert into user_devices (id, user_id, device_token, os) values ($1, $2, $3, $4);")
-            .bind(entity.id.clone())
+        let query = sqlx::query("insert into user_devices (user_id, device_token, os) values ($1, $2, $3) on conflict (user_id, device_token) do nothing;")
             .bind(entity.user_id.clone())
             .bind(entity.device_token.clone())
             .bind(entity.os.clone());
